@@ -10,11 +10,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout репозиторий
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Установка Python
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
@@ -26,7 +24,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # Тестирование
+      # Шаг для тестирования
       - name: Run tests
         run: |
           python manage.py test
@@ -49,7 +47,7 @@ jobs:
             -F "content=@project_archive.zip" \
             "$UPLOAD_URL"
 
-      # Распаковка архива на сервере
+      # Распаковка архива
       - name: Extract archive on PythonAnywhere
         env:
           PYTHONANYWHERE_API_TOKEN: ${{ secrets.PYTHONANYWHERE_API_TOKEN }}
@@ -81,7 +79,7 @@ jobs:
             -d '{"input":"cd /home/'"$PYTHONANYWHERE_USERNAME"'/weather_proj && python manage.py migrate\n"}' \
             "$MIGRATE_URL"
 
-      # Перезагрузка веб-приложения
+      # Перезагрузка приложения
       - name: Reload web application
         env:
           PYTHONANYWHERE_API_TOKEN: ${{ secrets.PYTHONANYWHERE_API_TOKEN }}
